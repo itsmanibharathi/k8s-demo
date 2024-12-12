@@ -1,0 +1,12 @@
+*.txt
+*.jpg
+*.png
+node_modules/
+Dockerfile
+.git/
+.vscode/
+.idea/
+*.log
+build/
+dist/
+tmp/

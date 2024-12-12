@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-forntend
+  labels:
+    app: demo-forntend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-forntend
+  template:
+    metadata:
+      labels:
+        app: demo-forntend
+    spec:
+      containers:
+      - name: demo-forntend
+        image: ghcr.io/itsmanibharathi/demo_frontend:latest
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: github-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-forntend
+spec:
+  selector:
+    app: demo-forntend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort

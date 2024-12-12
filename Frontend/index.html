@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Fetcher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        #getData {
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #getData:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        #getData:active {
+            background-color: #003f7f;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Data Fetcher</h1>
+        <button id="getData">Fetch Data</button>
+        <pre id="result">Click the button to fetch data.</pre>
+    </div>
+
+    <script>
+        document.getElementById("getData").addEventListener("click", async () => {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerText = "Loading...";
+            try {
+                const response = await fetch("http://localhost/api/data");
+                if (!response.ok) throw new Error("Failed to fetch data.");
+                const data = await response.json();
+                resultDiv.innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.innerText = "Error: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
