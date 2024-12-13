@@ -27,10 +27,21 @@ pipeline {
                 tty: true
                 securityContext:
                   runAsUser: 1000
+                volumeMounts:
+                - name: kube-config
+                  mountPath: /root/.kube/config
+                - name: kube-cert
+                  mountPath: /root/.minikube
               volumes:
               - name: docker-sock
                 hostPath:
                   path: /var/run/docker.sock
+              - name: kubeconfig
+                hostPath:
+                  path: /Users/antonyjesonj/.kube/config
+              - name: kube-certs
+                hostPath:
+                  path: /Users/antonyjesonj/.minikube
             """
         }
     }
