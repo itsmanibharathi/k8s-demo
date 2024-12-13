@@ -8,6 +8,12 @@ metadata:
   #   nginx.ingress.kubernetes.io/ssl-redirect: "false"
   #   nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
   #   nginx.ingress.kubernetes.io/enable-cors: "true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/enable-cors: "true
+    in
 spec:
   ingressClassName: nginx
   rules:
