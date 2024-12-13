@@ -15,6 +15,11 @@ pipeline {
                 volumeMounts:
                 - name: docker-sock
                   mountPath: /var/run/docker.sock
+              - name: sonar-scanner
+                image: sonarsource/sonar-scanner-cli:4.6
+                command:
+                - cat
+                tty: true
               volumes:
               - name: docker-sock
                 hostPath:
@@ -25,6 +30,8 @@ pipeline {
     environment {
         GHCR_USERNAME = credentials('github-username') // Replace with Jenkins credential ID for GitHub username
         GHCR_TOKEN = credentials('github-token')       // Replace with Jenkins credential ID for GitHub token
+        SONAR_TOKEN = credentials('sonar-token')       // Replace with Jenkins credential ID for SonarQube token
+        SONAR_HOST_URL = 'http://sonarqube-sonarqube.sonarqube.svc.cluster.local:9000'
     }
     stages {
         stage('Checkout Repository') {
@@ -38,6 +45,17 @@ pipeline {
                     sh '''
                     echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
                     '''
+                }
+            }
+        }
+        stage('SonarQube Scan') {
+            steps {
+                container('sonar-scanner') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                        sonar-scanner -Dsonar.projectKey=demo -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN
+                        '''
+                    }
                 }
             }
         }
