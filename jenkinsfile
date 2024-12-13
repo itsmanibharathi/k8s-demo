@@ -29,9 +29,7 @@ pipeline {
     }
     environment {
         GHCR_USERNAME = credentials('github-username') // Replace with Jenkins credential ID for GitHub username
-        GHCR_TOKEN = credentials('github-token')       // Replace with Jenkins credential ID for GitHub token
-        SONAR_TOKEN = credentials('sonar-token')       // Replace with Jenkins credential ID for SonarQube token
-        SONAR_HOST_URL = 'http://sonarqube-sonarqube.sonarqube.svc.cluster.local:9000'
+        GHCR_TOKEN = credentials('github-token')       // Replace with Jenkins credential ID for GitHub tokengit 
     }
     stages {
         stage('Checkout Repository') {
@@ -51,9 +49,9 @@ pipeline {
         stage('SonarQube Scan') {
             steps {
                 container('sonar-scanner') {
-                    withSonarQubeEnv('SonarQube') {
+                    withSonarQubeEnv('demo') {
                         sh '''
-                        sonar-scanner -Dsonar.projectKey=demo -Dsonar.sources=. -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN
+                        sonar-scanner -Dsonar.projectKey=demo 
                         '''
                     }
                 }
