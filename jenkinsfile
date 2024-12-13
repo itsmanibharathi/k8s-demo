@@ -20,6 +20,13 @@ pipeline {
                 command:
                 - cat
                 tty: true
+              - name: kubectl
+                image: bitnami/kubectl:1.21
+                command:
+                - cat
+                tty: true
+                securityContext:
+                  runAsUser: 1000
               volumes:
               - name: docker-sock
                 hostPath:
@@ -72,6 +79,17 @@ pipeline {
                     docker buildx create --use
                     docker buildx build --platform linux/amd64,linux/arm64,amd64 --push -f ./Frontend/Dockerfile --tag ghcr.io/itsmanibharathi/demo_frontend:latest --progress=plain ./Frontend/
                     docker buildx build --platform linux/amd64,linux/arm64,amd64 --push -f ./Backend/Dockerfile --tag ghcr.io/itsmanibharathi/demo_backend:latest --progress=plain ./Backend/
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                container('kubectl') {
+                    sh '''
+                    kubectl rollout restart deployment/frontend
+                    kubectl rollout restart deployment/backend
                     '''
                 }
             }
