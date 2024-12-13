@@ -61,8 +61,8 @@ pipeline {
             steps {
                 container('docker') {
                     sh '''
-                    docker buildx build --platform linux/amd64,linux/arm64, amd64 --push -f ./Frontend/ --tag ghcr.io/itsmanibharathi/demo_frontend:latest --progress=plain
-                    docker buildx build --platform linux/amd64,linux/arm64, amd64 --push -f ./Backend/ --tag ghcr.io/itsmanibharathi/demo_backend:latest --progress=plain
+                    docker buildx build --platform linux/amd64 --platform linux/arm64 --platform amd64 --push -f ./Frontend/ --tag ghcr.io/itsmanibharathi/demo_frontend:latest --progress=plain
+                    docker buildx build --platform linux/amd64 --platform linux/arm64 --platform amd64 --push -f ./Backend/ --tag ghcr.io/itsmanibharathi/demo_backend:latest --progress=plain
                     '''
                 }
             }
